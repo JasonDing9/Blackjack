@@ -13,7 +13,7 @@ When running the application, if you are not able to see the full board display,
 
 ### Images
 ![A preview of the Blackjack application.](/images/Blackjack1.png "Blackjack Preview 1")
-Player 1 went bankrupt and was kicked off the table. Players 2-7 have finished their turns and it is currently player 8's turn.
+Player 1 went bankrupt and was kicked off the table. Players 2-7 have finished their turns and it is currently player 8's turn. (Player 4 split his hand)
 
 
 ![A preview of the Blackjack application.](/images/Blackjack2.png "Blackjack Preview 2")

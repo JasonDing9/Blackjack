@@ -9,6 +9,7 @@ import jason.games.blackjack.model.CasinoPlayer;
 import jason.games.blackjack.model.Dealer;
 import jason.games.blackjack.model.Deck;
 import jason.games.blackjack.model.GameModel;
+import jason.games.blackjack.validator.ActionEnum;
 import jason.games.blackjack.validator.ActionValidator;
 import jason.games.blackjack.validator.BetValidator;
 import jason.games.blackjack.validator.ContinueValidator;
@@ -145,14 +146,19 @@ public class GameState {
 	}
 	
 	private StringBuilder buildValidPlayerChoices (CasinoPlayer player, Bet bet) {
-		StringBuilder validChoices = new StringBuilder("(Hit/Stand");
+		StringBuilder validChoices = new StringBuilder("(");
+		validChoices.append(ActionEnum.HIT.name()).append("<" + ActionEnum.HIT.getShortCut() + ">");
+		validChoices.append(" | ");
+		validChoices.append(ActionEnum.STAND.name()).append("<" + ActionEnum.STAND.getShortCut() + ">");
 		
-		if (player.canDouble(bet)) {
-			validChoices.append("/Double");
+		if (player.canDouble(bet) && player.getCash() >= bet.getWager()) {
+			validChoices.append(" | ");
+			validChoices.append(ActionEnum.DOUBLE.name()).append("<" + ActionEnum.DOUBLE.getShortCut() + ">");
 		}
 		
 		if (player.canSplit(bet) && player.getCash() >= bet.getWager()) {
-			validChoices.append("/Split");
+			validChoices.append(" | ");
+			validChoices.append(ActionEnum.SPLIT.name()).append("<" + ActionEnum.SPLIT.getShortCut() + ">");
 		}
 		
 		validChoices.append(")");
@@ -161,19 +167,19 @@ public class GameState {
 
 	private void performPlayerTurn(CasinoPlayer player, Bet bet) {
 		while (bet.isHandStillPlaying()) {
-			InputValidator<String> validator = new ActionValidator(player, bet);
+			InputValidator<ActionEnum> validator = new ActionValidator(player, bet);
 			
 			this.userInput.getUserInput(player.getName() + 
 					": What would you like to do? " + buildValidPlayerChoices(player, bet), validator);
-			String action = validator.getValue();
+			ActionEnum action = validator.getValue();
 			
-			if (action.equals("stand")) {
+			if (action == ActionEnum.STAND) {
 				doPlayerStandAction(player, bet);
-			} else if (action.equals("hit")) {
+			} else if (action == ActionEnum.HIT) {
 				doPlayerHitAction(player, bet);
-			} else if (action.equals("double")) {
+			} else if (action == ActionEnum.DOUBLE) {
 				doPlayerDoubleAction(player, bet);
-			} else if (action.equals("split")) {
+			} else if (action == ActionEnum.SPLIT) {
 				doPlayerSplitAction(player, bet);
 			}
 		}

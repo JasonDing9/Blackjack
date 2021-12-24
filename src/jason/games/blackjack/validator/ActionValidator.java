@@ -3,10 +3,10 @@ package jason.games.blackjack.validator;
 import jason.games.blackjack.model.Bet;
 import jason.games.blackjack.model.CasinoPlayer;
 
-public class ActionValidator implements InputValidator<String> {
+public class ActionValidator implements InputValidator<ActionEnum> {
 	private boolean isValid = false;
 	private String errorMessage;
-	private String value;
+	private ActionEnum value;
 	private CasinoPlayer player;
 	private Bet bet;
 	
@@ -26,7 +26,7 @@ public class ActionValidator implements InputValidator<String> {
 	}
 
 	@Override
-	public String getValue() {
+	public ActionEnum getValue() {
 		return this.value;
 	}
 
@@ -34,53 +34,51 @@ public class ActionValidator implements InputValidator<String> {
 	public void validate(String input) {
 		int initialBetAmmount = bet.getWager();
 		int playerCash = player.getCash();
+		ActionEnum action = ActionEnum.getAction(input);
 		
-		if (input == null) {
+		if (action == null) {
 	        this.isValid = false; 
-	        this.errorMessage = "Invalid input. Your input is empty.";
+	        this.errorMessage = "Your input '" + input + "' is invalid.";
 	        return;
 	    } 
 		
-		if (input.equalsIgnoreCase("hit")) {
-			this.isValid = true;
-			this.value = "hit";
-			return;
-		}
-		
-		if (input.equalsIgnoreCase("stand")) {
-			this.isValid = true;
-			this.value = "stand";
-			return;
-		}
-		
-		if (input.equalsIgnoreCase("split") && player.canSplit(bet)) {
-			if (playerCash >= initialBetAmmount) {
+		switch (action) {
+			case STAND:
+			case HIT:
 				this.isValid = true;
-				this.value = "split";
-				return;
-			} else {
-				this.isValid = false;
-				this.errorMessage = "Not enough money to do that action.";
-				return;
-			}
+				this.value = action;
+				break;
+			case DOUBLE:
+				if (! player.canDouble(bet)) {
+					this.isValid = false;
+					this.errorMessage = "You cannot double with your current hand.";
+					break;
+				}
+				if (playerCash >= initialBetAmmount) {
+					this.isValid = true;
+					this.value = action;
+				} else {
+					this.isValid = false;
+					this.errorMessage = "Not enough money to do that action.";
+				}
+				break;
+			case SPLIT:
+				if (! player.canSplit(bet)) {
+					this.isValid = false;
+					this.errorMessage = "You cannot split with your current hand.";
+					break;
+				}
+				if (playerCash >= initialBetAmmount) {
+					this.isValid = true;
+					this.value = action;
+				} else {
+					this.isValid = false;
+					this.errorMessage = "Not enough money to do that action.";
+				}
+				break;
+				
 		}
-		
-		if ((input.equalsIgnoreCase("double") || input.equalsIgnoreCase("double down") 
-				|| input.equalsIgnoreCase("double-down")) && player.canDouble(bet)) {
-			if (playerCash >= initialBetAmmount) {
-				this.isValid = true;
-				this.value = "double";
-				return;
-			} else {
-				this.isValid = false;
-				this.errorMessage = "Not enough money to do that action.";
-				return;
-			}
-		}
-		
-		this.isValid = false;
-		this.value = "invalid";
-		this.errorMessage = "Your input '" + input + "' is invalid.";
+			
 	}
 
 }
