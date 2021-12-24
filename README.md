@@ -9,12 +9,15 @@ One can also edit the number of decks in the shoe and the display delay by passi
 
 Change {delayInMS} to be equal to how long you want the delay to be in (in milliseconds, 0-9999). Change {numberOfDecksInShoe} to be equal to how many decks you want to be in the shoe (1-9). The default delay time is 200ms, default deck number in the shoe is 6.
 
+When running the application, if you are not able to see the full board display, either decrease your font size or increase the size of your window.
+
 ### Images
 ![A preview of the Blackjack application.](/images/Blackjack1.png "Blackjack Preview 1")
+Player 1 went bankrupt and was kicked off the table. Players 2-7 have finished their turns and it is currently player 8's turn.
 
 
 ![A preview of the Blackjack application.](/images/Blackjack2.png "Blackjack Preview 2")
-These are images showing the Blackjack application in action.
+It is the end of the round. The dealer got a Blackjack, so everyone lost, except for player 1 (who tied).
 
 ### Software Versions
 
@@ -32,18 +35,18 @@ https://bicyclecards.com/how-to-play/blackjack/
 
 ### Design
 
-Model-view-controller and observer design patterns were used.
+Model-view-controller and observer design patterns are used.
 
-ActionListeners were used to signal to the display whenever there was an update to the players, dealer, or game log.
+ActionListeners is used to signal to the display whenever there is an update to the players, dealer, or game log.
 
-A model class was used to hold all of the data. The viewer class was used for all displays and a controller class was used for all of the game logic. The viewer and the controller classes never called on each other. Rather, the model class was used to store, edit and, get data that were needed between the viewer and model classes.
+A model class is used to hold all of the data. The viewer class is used for all displays and a controller class is used for all of the game logic. The viewer and the controller classes never call on each other. Rather, the model class is used to store, edit and, get data that are needed between the viewer and model classes.
 
 ### Rules Implemented
 
 - Up to 8 players can play at once.
 - Players will start with $1000.
 - Players must bet more than $0 every round.
-- The dealer will draw two cards for themself at the start of the round and not show their second card until all players finish their turns.
+- The dealer will draw two cards for themself at the start of the round and will not show the second card until all players finish their turns.
 - The dealer will continue to hit until they get 17 or higher.
 - Players are given the choice to hit, stand, split, or double.
 - Players can only split if their hand consists of two cards and both cards have the same face value (e.g. a King and a King).
