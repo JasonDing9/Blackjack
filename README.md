@@ -39,14 +39,14 @@ Model-view-controller and observer design patterns are used.
 
 ActionListeners is used to signal to the display whenever there is an update to the players, dealer, or game log.
 
-A model class is used to hold all of the data. The viewer class is used for all displays and a controller class is used for all of the game logic. The viewer and the controller classes never call on each other. Rather, the model class is used to store, edit and, get data that are needed between the viewer and model classes.
+A model class is used to hold all of the data. The viewer class is used for all displays and a controller class is used for all of the game logic. The viewer and the controller classes never call on each other. Rather, the model class is used to store, edit, and get data that are needed between the viewer and model classes.
 
 ### Rules Implemented
 
 - Up to 8 players can play at once.
 - Players will start with $1000.
 - Players must bet more than $0 every round.
-- The dealer will draw two cards for themself at the start of the round and will not show the second card until all players finish their turns.
+- The dealer will draw two cards for themselves at the start of the round and will not show the second card until all players finish their turns.
 - The dealer will continue to hit until they get 17 or higher.
 - Players are given the choice to hit, stand, split, or double.
 - Players can only split if their hand consists of two cards and both cards have the same face value (e.g. a King and a King).
